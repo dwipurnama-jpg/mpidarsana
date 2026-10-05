@@ -1,0 +1,553 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jelajah Sad Darsana</title>
+<style>
+:root{--bg:#08111f;--panel:#101d31;--panel2:#152640;--text:#f5f1df;--muted:#b7c2d4;--gold:#e8bd62;--line:#29405f;--good:#5ee0a0;--bad:#ff7180;--shadow:0 20px 60px #0008;--glow:#e8bd6266;--themeAccent:#e8bd62;--themeText:#f5f1df;--themeMuted:#b7c2d4;--themeSoft:#ffffff12;--themeBtnText:#171108}
+:root{--bg:#08111f;--panel:#101d31;--panel2:#152640;--text:#f5f1df;--muted:#b7c2d4;--gold:#e8bd62;--line:#29405f;--good:#5ee0a0;--bad:#ff7180;--shadow:0 20px 60px #0008;--glow:#e8bd6266}
+.quizbox{isolation:isolate;overflow:hidden;background:radial-gradient(circle at 50% -20%,var(--theme2,#4da3ff)1%,transparent 42%),linear-gradient(145deg,#142640ee,#07101eee);border-color:#ffffff18}
+.quizbox:before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 15% 20%,#4da3ff20,transparent 21%),radial-gradient(circle at 85% 75%,#8bd3ff20,transparent 15%);filter:blur(35px);animation:ambient 7s ease-in-out infinite alternate}
+.quiz-scene{position:relative;height:145px;margin:-30px -30px 24px;overflow:hidden;background:linear-gradient(180deg,#07111f00,#07111f);border-bottom:1px solid #ffffff10}
+.quiz-scene:before{content:'';position:absolute;left:8%;right:8%;bottom:18px;height:2px;background:linear-gradient(90deg,transparent,var(--theme1,#4da3ff),transparent);box-shadow:0 0 22px var(--theme1,#4da3ff);animation:beam 3s ease-in-out infinite}
+.scene-orb{position:absolute;border-radius:50%;border:1px solid #ffffff30;box-shadow:0 0 35px var(--theme1,#4da3ff),inset 0 0 20px #fff2;animation:orbFloat 5s ease-in-out infinite}
+.scene-orb.one{width:78px;height:78px;left:12%;top:26px}
+.scene-orb.two{width:38px;height:38px;right:18%;top:48px;animation-delay:1s}
+.scene-orb.three{width:14px;height:14px;left:34%;top:72px;animation-delay:2s}
+.scene-symbol{position:absolute;inset:0;display:grid;place-items:center;font-size:68px;text-shadow:0 0 30px var(--theme1,#4da3ff);animation:symbolFloat 4s ease-in-out infinite}
+.scene-label{position:absolute;left:24px;top:16px;font-size:11px;letter-spacing:3px;color:#ffffff88}
+.question{position:relative;padding:24px 28px;margin:18px auto 24px;max-width:760px;border-radius:22px;border:1px solid #ffffff14;background:linear-gradient(135deg,#ffffff08,#ffffff03);box-shadow:inset 0 1px #fff1,0 15px 35px #0004}
+.question:before{content:'❝';position:absolute;left:12px;top:0;color:var(--theme1,#4da3ff);font-size:45px;opacity:.45}
+.option{background:linear-gradient(135deg,#18304e,#101f35);border-color:#ffffff15;box-shadow:inset 0 1px #fff1,0 10px 25px #0003}
+.option:hover{border-color:var(--theme1,#4da3ff);box-shadow:0 0 25px var(--theme1,#4da3ff)22,0 10px 25px #0005}
+.option.correct{box-shadow:0 0 30px #5ee0a044,inset 0 0 20px #5ee0a022}
+.cinematic-badge{display:inline-flex;align-items:center;gap:8px;margin-top:15px;padding:7px 13px;border:1px solid #ffffff18;border-radius:999px;background:#ffffff08;color:#d9c891;font-size:12px;letter-spacing:1px}
+.burst{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:0}
+.burst.show{animation:burst .8s ease-out}
+.burst i{position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 15px var(--gold);transform:rotate(var(--a)) translateY(0);animation:particle .8s ease-out}
+.burst i:nth-child(1){--a:0deg}.burst i:nth-child(2){--a:45deg}.burst i:nth-child(3){--a:90deg}.burst i:nth-child(4){--a:135deg}.burst i:nth-child(5){--a:180deg}.burst i:nth-child(6){--a:225deg}.burst i:nth-child(7){--a:270deg}.burst i:nth-child(8){--a:315deg}
+@keyframes ambient{from{transform:scale(1)}to{transform:scale(1.18)}}
+@keyframes beam{0%,100%{opacity:.35;transform:scaleX(.75)}50%{opacity:1;transform:scaleX(1)}}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.08)}}
+@keyframes symbolFloat{0%,100%{transform:translateY(0) scale(1);filter:brightness(1)}50%{transform:translateY(-7px) scale(1.06);filter:brightness(1.3)}}
+@keyframes burst{0%{opacity:1}100%{opacity:0}}
+@keyframes particle{to{transform:rotate(var(--a)) translateY(-130px);opacity:0}}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,'Times New Roman',serif;background:#08111f;color:var(--text)}
+button{font:inherit;cursor:pointer;border:0}
+.app{min-height:100vh;background:radial-gradient(circle at 20% 10%,#21426c 0,#0b1729 34%,#050b14 100%);overflow:hidden;position:relative}
+.app:before,.app:after{content:'';position:absolute;inset:-30%;pointer-events:none;background-image:radial-gradient(circle,#fff8 0 1px,transparent 2px),radial-gradient(circle,#e8bd6266 0 1px,transparent 2px);background-size:95px 95px,145px 145px;animation:stars 28s linear infinite}
+.app:after{background-size:175px 175px;opacity:.45;animation-duration:42s;animation-direction:reverse}
+.screen{min-height:100vh;padding:32px 22px;display:none;align-items:center;justify-content:center;position:relative;z-index:1}
+.screen.active{display:flex;animation:screenIn .65s cubic-bezier(.2,.8,.2,1)}
+.wrap{width:min(1100px,100%)}
+.orn{color:var(--gold);letter-spacing:8px;text-align:center;font-size:18px;animation:shimmer 3s ease-in-out infinite}
+.hero{text-align:center;padding:42px 20px}
+.om{font-size:72px;color:var(--gold);text-shadow:0 0 18px #e8bd6288,0 0 55px #e8bd6233;margin-bottom:8px;animation:omPulse 3s ease-in-out infinite}
+.hero h1{font-size:clamp(38px,7vw,76px);margin:8px 0;font-weight:700;background:linear-gradient(90deg,#fff2c6,#e8bd62,#fff2c6);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:titleShine 5s linear infinite}
+.hero h2{color:#d8c79d;font-weight:400;font-size:clamp(17px,2vw,24px);margin:0 auto 28px;max-width:760px}
+.quote{font-style:italic;color:#c9d4e4;max-width:680px;margin:0 auto 34px;line-height:1.7}
+.btn{padding:14px 24px;border-radius:999px;background:linear-gradient(135deg,#f1cf79,#b9862d);color:#171108;font-weight:700;box-shadow:0 8px 24px #0006;transition:.2s;position:relative;overflow:hidden}
+.btn:after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,#fff8 50%,transparent 70%);transform:translateX(-120%);animation:buttonShine 3.5s infinite}
+.btn:hover{transform:translateY(-3px) scale(1.02);filter:brightness(1.08);box-shadow:0 12px 35px #e8bd6233}
+.btn.secondary{background:#182941;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.brand{font-weight:bold;color:var(--gold);text-shadow:0 0 15px #e8bd6244}
+.progress{height:8px;background:#0b1422;border-radius:99px;overflow:hidden;border:1px solid #20334e}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#8d6726,#f5d98a);transition:.6s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 12px #e8bd6288}
+.map-title{text-align:center;margin:8px 0 28px}
+.map-title h1{font-size:42px;margin:0 0 6px}
+.map-title p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{position:relative;min-height:230px;padding:24px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,#142640cc,#0c1728ee);box-shadow:var(--shadow);transition:.35s cubic-bezier(.2,.8,.2,1);overflow:hidden;animation:cardIn .65s both}
+.card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.19s}.card:nth-child(4){animation-delay:.26s}.card:nth-child(5){animation-delay:.33s}.card:nth-child(6){animation-delay:.40s}
+.card:before{content:'';position:absolute;inset:-2px;background:linear-gradient(120deg,transparent 20%,#e8bd6220 45%,transparent 70%);transform:translateX(-100%);transition:.6s}
+.card:hover:not(.locked):before{transform:translateX(100%)}
+.card:hover:not(.locked){transform:translateY(-8px) scale(1.015);border-color:#b8954f;box-shadow:0 25px 60px #0009,0 0 25px #e8bd6218}
+.card.locked{opacity:.52;filter:saturate(.5)}
+.icon{font-size:45px;animation:float 3.5s ease-in-out infinite}
+.card:nth-child(2) .icon{animation-delay:.5s}.card:nth-child(3) .icon{animation-delay:1s}.card:nth-child(4) .icon{animation-delay:1.5s}.card:nth-child(5) .icon{animation-delay:2s}.card:nth-child(6) .icon{animation-delay:2.5s}
+.num{position:absolute;right:18px;top:17px;color:#8da1bb}
+.card h2{margin:12px 0 7px}
+.card p{color:var(--muted);line-height:1.5}
+.tag{display:inline-block;padding:5px 10px;border-radius:999px;background:#ffffff0c;color:#dfcc9b;font-size:12px}
+.check{position:absolute;right:18px;bottom:17px;color:var(--good);font-weight:bold}
+.lock{position:absolute;right:18px;bottom:17px}
+.lesson{max-width:850px;margin:auto}
+.lesson .panel,.quizbox,.result{background:linear-gradient(145deg,#13243ddd,#0c1728ee);border:1px solid var(--line);border-radius:28px;padding:30px;box-shadow:var(--shadow);backdrop-filter:blur(10px);animation:panelIn .55s ease both}
+.lesson-head{display:flex;gap:18px;align-items:center;margin-bottom:22px}
+.bigicon{font-size:55px;animation:float 3s ease-in-out infinite}
+.lesson h1{font-size:40px;margin:0}
+.lesson h3{color:var(--gold);font-size:20px;margin-bottom:7px}
+.lesson p,.lesson li{line-height:1.75;color:#d4deec}
+.pillrow{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0}
+.pill{padding:8px 12px;background:#ffffff09;border:1px solid #2b4160;border-radius:12px;color:#d9c891;transition:.25s}
+.pill:hover{transform:translateY(-3px);background:#ffffff14;border-color:#8f743c}
+.actions{display:flex;gap:12px;justify-content:flex-end;margin-top:25px;flex-wrap:wrap}
+.quizbox{text-align:center}
+.quiz-meta{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:20px}
+.question{font-size:26px;line-height:1.35;margin:18px auto 24px;max-width:700px;animation:questionIn .45s ease}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.option{padding:16px;border-radius:15px;background:#172b47;border:1px solid #2c4768;color:var(--text);text-align:left;transition:.25s;animation:optionIn .4s both}
+.option:nth-child(2){animation-delay:.05s}.option:nth-child(3){animation-delay:.1s}.option:nth-child(4){animation-delay:.15s}
+.option:hover{background:#213b5f;transform:translateY(-3px) scale(1.01);box-shadow:0 10px 25px #0005}
+.option.correct{border-color:var(--good);background:#123e32;animation:correctPop .5s}
+.option.wrong{border-color:var(--bad);background:#4a1e2a;animation:shake .45s}
+.feedback{min-height:30px;margin:18px 0;color:var(--muted)}
+.score{font-size:44px;color:var(--gold);font-weight:bold;text-shadow:0 0 25px #e8bd6255;animation:scorePop .7s ease}
+.seal{font-size:75px;animation:sealFloat 3s ease-in-out infinite}
+.center{text-align:center}
+.small{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(30px);background:#172b45;border:1px solid #3b587b;padding:12px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:.3s;z-index:10;box-shadow:0 10px 30px #0008}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);animation:toastPop .3s ease}
+.lesson .panel:after,.quizbox:after,.result:after{content:'✦';position:absolute;color:#e8bd6244;font-size:22px;animation:spin 8s linear infinite}
+.lesson .panel,.quizbox,.result{position:relative}
+@keyframes stars{to{transform:translate(95px,95px)}}
+@keyframes screenIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes panelIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(25px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes omPulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.08);filter:brightness(1.25)}}
+@keyframes titleShine{to{background-position:200% center}}
+@keyframes shimmer{0%,100%{opacity:.65;letter-spacing:8px}50%{opacity:1;letter-spacing:11px}}
+@keyframes buttonShine{0%,55%{transform:translateX(-120%)}75%,100%{transform:translateX(120%)}}
+@keyframes questionIn{from{opacity:0;transform:translateX(15px)}to{opacity:1;transform:none}}
+@keyframes optionIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes correctPop{50%{transform:scale(1.04);box-shadow:0 0 25px #5ee0a044}}
+@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+@keyframes scorePop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@keyframes sealFloat{0%,100%{transform:translateY(0) rotate(-3deg);filter:drop-shadow(0 0 12px #e8bd6244)}50%{transform:translateY(-10px) rotate(3deg);filter:drop-shadow(0 0 28px #e8bd6266)}}
+@keyframes toastPop{from{transform:translateX(-50%) translateY(20px) scale(.9)}to{transform:translateX(-50%) translateY(0) scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.options{grid-template-columns:1fr}.hero{padding:25px 5px}.lesson .panel,.quizbox,.result{padding:22px}.top{gap:12px}.map-title h1{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}}
+</style>
+<style>
+.theme-decor{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;opacity:.78;transition:opacity .5s}
+.theme-decor .edge{position:absolute;display:flex;align-items:center;gap:18px;font-size:24px;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--themeAccent) 35%,transparent));white-space:nowrap}
+.theme-decor .top{top:10px;left:50%;transform:translateX(-50%);width:max-content}
+.theme-decor .bottom{bottom:8px;left:50%;transform:translateX(-50%);width:max-content}
+.theme-decor .left{left:-10px;top:50%;transform:translateY(-50%) rotate(-90deg);width:max-content}
+.theme-decor .right{right:-10px;top:50%;transform:translateY(-50%) rotate(90deg);width:max-content}
+.theme-decor .centerpiece{position:absolute;top:22px;right:28px;font-size:42px;opacity:.65;filter:drop-shadow(0 0 15px color-mix(in srgb,var(--themeAccent) 55%,transparent));animation:themeFloat 4s ease-in-out infinite}
+.theme-decor .stars{letter-spacing:14px;font-size:18px;opacity:.8}
+.theme-decor .wave{letter-spacing:2px;font-size:27px}
+.theme-decor .roses{font-size:22px;letter-spacing:5px}
+.theme-decor .shells{font-size:22px;letter-spacing:4px}
+@keyframes themeFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(8px) rotate(4deg)}}
+@media(max-width:700px){.theme-decor .edge{font-size:17px;gap:9px}.theme-decor .centerpiece{font-size:30px;right:12px}.theme-decor .left,.theme-decor .right{display:none}}
+</style>
+<style>
+.app{background:radial-gradient(circle at 20% 10%,var(--appGlow,#21426c) 0,var(--bgMid,#0b1729) 34%,var(--bgDeep,#050b14) 100%)}
+body{background:var(--bg)}
+.app:before,.app:after{background-image:radial-gradient(circle,var(--themeSoft) 0 1px,transparent 2px),radial-gradient(circle,var(--themeAccent) 0 1px,transparent 2px)}
+.hero h1{background:linear-gradient(90deg,var(--themeText),var(--themeAccent),var(--themeText));background-size:200%}
+.hero h2,.quote,.map-title p,.card p,.small,.lesson p,.lesson li{color:var(--themeMuted)}
+.orn,.brand,.map-title h1,.lesson h3{color:var(--themeAccent)}
+.om{color:var(--themeAccent);text-shadow:0 0 18px var(--themeAccent),0 0 55px var(--themeAccent)}
+.btn{background:linear-gradient(135deg,var(--themeAccent),var(--theme2));color:#142019;box-shadow:0 8px 24px #0006}
+.btn:hover{box-shadow:0 12px 35px var(--themeAccent)}
+.btn.secondary{background:var(--panel2);color:var(--themeText);border-color:var(--line)}
+.progress{background:var(--bg);border-color:var(--line)}
+.progress span{background:linear-gradient(90deg,var(--theme2),var(--themeAccent));box-shadow:0 0 12px var(--themeAccent)}
+.card,.lesson .panel,.quizbox,.result{background:linear-gradient(145deg,var(--panel2),var(--panel));border-color:var(--line)}
+.card:before{background:linear-gradient(120deg,transparent 20%,var(--themeAccent) 45%,transparent 70%);opacity:.12}
+.card:hover:not(.locked){border-color:var(--themeAccent);box-shadow:0 25px 60px #0009,0 0 25px var(--themeAccent)}
+.card h2,.lesson h1,.quizbox,.result h1{color:var(--themeText)}
+.tag,.pill,.cinematic-badge{color:var(--themeAccent);border-color:var(--line)}
+.pill:hover{border-color:var(--themeAccent)}
+.question:before{color:var(--themeAccent)}
+.option{background:linear-gradient(135deg,var(--panel2),var(--panel));border-color:var(--line);color:var(--themeText)}
+.option:hover{background:var(--panel2);border-color:var(--themeAccent);box-shadow:0 0 25px var(--themeAccent),0 10px 25px #0005}
+.toast{background:var(--panel2);border-color:var(--line);color:var(--themeText)}
+.theme-panel{display:none!important}.theme-choice{display:none}.theme-panel.show{display:none!important}
+.score{color:var(--themeAccent);text-shadow:0 0 25px var(--themeAccent)}
+.seal{filter:drop-shadow(0 0 12px var(--themeAccent))}
+.theme-cycle{min-width:116px;transition:background .35s,border-color .35s,color .35s,box-shadow .35s}
+.literacy{margin-top:22px;padding:22px 24px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,var(--panel2),var(--panel));box-shadow:inset 0 1px #fff1,0 14px 35px #0004;position:relative;overflow:hidden}
+.literacy:before{content:'📖';position:absolute;right:18px;top:13px;font-size:42px;opacity:.13;transform:rotate(-8deg)}
+.literacy-label{display:flex;align-items:center;gap:9px;color:var(--themeAccent);font-weight:700;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:10px}
+.literacy-title{font-size:23px;color:var(--themeText);font-weight:700;margin-bottom:9px}
+.literacy p{margin:0;color:var(--themeMuted);line-height:1.8;max-width:760px}
+.literacy-note{margin-top:13px;color:var(--themeAccent);font-size:12px;font-style:italic}
+.literacy-points{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin-top:17px}
+.literacy-point{padding:9px 11px;border-radius:12px;background:var(--themeSoft);border:1px solid var(--line);color:var(--themeText);font-size:13px}
+.literacy-point b{color:var(--themeAccent)}
+@media(max-width:700px){.literacy{padding:18px}.literacy-points{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main class="app" id="app">
+<div id="themeDecor" class="theme-decor" aria-hidden="true"></div>
+
+<section id="opening" class="screen active">
+<div class="wrap hero">
+<div class="orn">✦ • ✦ • ✦</div>
+<div class="om">ॐ</div>
+<h1>Jelajah Sad Darsana</h1>
+<h2>Enam jalan pemikiran Hindu untuk mengenal pengetahuan, realitas, dharma, kesadaran, dan hakikat diri.</h2>
+<p class="quote">“Belajar bukan hanya mengetahui jawaban, tetapi belajar melihat kebenaran melalui berbagai jalan.”</p>
+<button class="btn" onclick="startJourney()">Mulai Perjalanan ✦</button>
+<p class="small" style="margin-top:18px">Progres tersimpan otomatis di perangkat ini.</p>
+</div>
+</section>
+
+<section id="map" class="screen">
+<div class="wrap">
+<div class="top">
+<div class="brand">ॐ SAD DARSANA</div>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+<button id="themeCycleBtn" class="btn secondary theme-cycle" data-theme-index="0" onclick="cycleTheme()">🎨 Tema</button>
+<button class="btn secondary" onclick="resetProgress()">↻ Ulangi Progres</button>
+</div>
+</div>
+<div class="map-title">
+<div class="orn">✦ JALAN PENGETAHUAN ✦</div>
+<h1>Peta Perjalanan</h1>
+<p>Setiap bab memiliki 5 soal. Raih <b>100/100</b> untuk membuka bab berikutnya.</p>
+</div>
+<div id="cards" class="grid"></div>
+</div>
+</section>
+
+<section id="lesson" class="screen">
+<div class="wrap lesson">
+<div class="top">
+<div class="brand">RUANG PEMBELAJARAN</div>
+<button class="btn secondary" onclick="show('map')">← Peta</button>
+</div>
+<div class="panel" id="lessonPanel"></div>
+</div>
+</section>
+
+<section id="quiz" class="screen">
+<div class="wrap">
+<div class="quizbox">
+<div class="quiz-scene">
+<span class="scene-label">SAD DARSANA • CHALLENGE</span>
+<span class="scene-orb one"></span>
+<span class="scene-orb two"></span>
+<span class="scene-orb three"></span>
+<div class="scene-symbol" id="sceneSymbol">ॐ</div>
+</div>
+<div class="orn">✦ TANTANGAN DARŚANA ✦</div>
+<div class="cinematic-badge" id="chapterBadge">✦ Bab 01 • Telaga Penalaran</div>
+<div class="quiz-meta"><span id="qProgress"></span><span id="qScore"></span></div>
+<div class="progress"><span id="qBar" style="width:0%"></span></div>
+<div class="question" id="question"></div>
+<div id="options" class="options"></div>
+<div id="feedback" class="feedback"></div>
+<button id="nextBtn" class="btn" style="display:none" onclick="nextQuestion()">Lanjutkan →</button>
+</div>
+</div>
+</section>
+
+<section id="closing" class="screen">
+<div class="wrap result center">
+<div class="seal">🪷</div>
+<div class="orn">✦ PERJALANAN SELESAI ✦</div>
+<h1>Terima Kasih, Penjelajah</h1>
+<p style="line-height:1.8;color:#d4deec;max-width:680px;margin:auto">Anda telah menyelesaikan seluruh perjalanan Sad Darsana. Semoga pengetahuan ini tidak berhenti di layar, tetapi menjadi bekal untuk berpikir jernih, menjalankan dharma, mengendalikan diri, dan mengenal hakikat kehidupan.</p>
+<div class="score" style="margin:24px">600 / 600</div>
+<p class="small">Semua 30 tantangan telah dituntaskan dengan sempurna.</p>
+<div class="actions" style="justify-content:center">
+<button class="btn" onclick="playAgain()">↻ Mainkan Lagi</button>
+<button class="btn secondary" onclick="show('map')">Lihat Peta</button>
+</div>
+</div>
+</section>
+<div id="toast" class="toast"></div>
+<div id="burst" class="burst"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</main>
+
+<script>
+const themes={
+rose:{bg:'#351c2a',mid:'#6b304d',glow:'#c15f86',accent:'#ffadc9',gold:'#ffd0df',panel:'#4a2537',panel2:'#63304a',line:'#9d5375',name:'Merah Muda'},
+night:{bg:'#080914',mid:'#17142b',glow:'#44376e',accent:'#b7a4ff',gold:'#ddd3ff',panel:'#111126',panel2:'#1d1a38',line:'#403b68',name:'Malam Sunyi'},
+ocean:{bg:'#061b2b',mid:'#0b4560',glow:'#168db0',accent:'#72d9f2',gold:'#b5efff',panel:'#0c2c3d',panel2:'#12445a',line:'#286a82',name:'Lautan Biru'}
+};
+
+function applyTheme(name){
+const t=themes[name]||themes.ocean;
+const r=document.documentElement;
+r.style.setProperty('--bg',t.bg);
+r.style.setProperty('--panel',t.panel);
+r.style.setProperty('--panel2',t.panel2);
+r.style.setProperty('--line',t.line);
+r.style.setProperty('--gold',t.gold);
+r.style.setProperty('--themeAccent',t.accent);
+r.style.setProperty('--themeText','#f8f4ec');
+r.style.setProperty('--themeMuted','#d3d9d8');
+r.style.setProperty('--themeSoft',t.accent+'22');
+r.style.setProperty('--theme1',t.accent);
+r.style.setProperty('--theme2',t.gold);
+r.style.setProperty('--bgMid',t.mid);
+r.style.setProperty('--bgDeep',t.bg);
+r.style.setProperty('--appGlow',t.glow);
+document.body.style.background=t.bg;
+document.querySelectorAll('.theme-choice').forEach(b=>b.classList.toggle('selected',b.dataset.theme===name));
+const idx=['rose','night','ocean'].indexOf(name);
+const btn=document.getElementById('themeCycleBtn');
+if(btn)btn.dataset.themeIndex=String(idx<0?0:idx);
+document.documentElement.dataset.theme=name;
+localStorage.setItem('sadDarsanaTheme',name);
+renderThemeDecor(name)
+}
+
+function renderThemeDecor(name){
+const d=document.getElementById('themeDecor');
+if(!d)return;
+if(name==='rose'){
+d.innerHTML='<div class="edge top roses">🌹 ✿ 🌹 ✿ 🌹 ✿ 🌹</div><div class="edge bottom roses">🌹 ✿ 🌹 ✿ 🌹 ✿ 🌹</div><div class="edge left roses">🌹 ✿ 🌹 ✿ 🌹 ✿ 🌹</div><div class="edge right roses">🌹 ✿ 🌹 ✿ 🌹 ✿ 🌹</div><div class="centerpiece">🌹</div>'
+}else if(name==='ocean'){
+d.innerHTML='<div class="edge top wave">〰️ 🌊 〰️ 🐚 〰️ 🌊 〰️</div><div class="edge bottom shells">🐚 〰️ 🌊 〰️ 🐚 〰️ 🌊</div><div class="edge left wave">🌊 〰️ 🌊 〰️ 🌊</div><div class="edge right wave">🌊 〰️ 🌊 〰️ 🌊</div><div class="centerpiece">🐚</div>'
+}else{
+d.innerHTML='<div class="edge top stars">✦ · ★ · ✧ · ★ · ✦ · ★</div><div class="edge bottom stars">★ · ✧ · ★ · ✦ · ★ · ✧</div><div class="edge left stars">✦ · ★ · ✧ · ★</div><div class="edge right stars">★ · ✧ · ★ · ✦</div><div class="centerpiece">☾</div>'
+}
+}
+
+function toggleThemePanel(){
+const p=document.getElementById('themePanel');
+p.classList.toggle('show')
+}
+
+function setTheme(name){
+applyTheme(name);
+toast('Tema diterapkan.')
+}
+
+function cycleTheme(){
+const order=['rose','night','ocean'];
+const current=localStorage.getItem('sadDarsanaTheme');
+const idx=order.indexOf(current);
+const next=order[(idx+1)%order.length];
+applyTheme(next);
+const labels={rose:'Merah Muda',night:'Malam Sunyi',ocean:'Lautan Biru'};
+toast(labels[next])
+}
+
+const chapters=[
+{
+title:'Nyaya',icon:'🔎',theme:'Telaga Penalaran',
+desc:'Menyelami penalaran, bukti pengetahuan, dan cara mencapai pemahaman yang benar.',
+body:'Nyaya menekankan logika dan metode memperoleh pengetahuan yang benar. Tokoh utamanya adalah Gautama/Aksapada. Empat pramana yang umum dibahas adalah pratyaksa, anumana, upamana, dan sabda.',
+chips:['Gautama','Pramana','Pratyaksa','Anumana','Upamana','Sabda'],
+qs:[
+['Tokoh utama Darsana Nyaya adalah …',['Gautama/Aksapada','Jaimini','Kanada','Patanjali'],'Gautama/Aksapada'],
+['Anumana berarti pengetahuan yang diperoleh melalui …',['Perbandingan','Inferensi/penarikan kesimpulan','Upacara','Meditasi'],'Inferensi/penarikan kesimpulan'],
+['Pratyaksa berarti pengetahuan melalui …',['Persepsi langsung','Kitab suci saja','Perbandingan','Ingatan'],'Persepsi langsung'],
+['Upamana berkaitan dengan …',['Perbandingan/analogi','Tindakan ritual','Konsentrasi','Atom'],'Perbandingan/analogi'],
+['Sabda sebagai pramana berkaitan dengan …',['Kesaksian verbal yang dapat dipercaya','Gerak tubuh','Unsur alam','Emosi'],'Kesaksian verbal yang dapat dipercaya']
+]
+},
+{
+title:'Waisesika',icon:'⚛️',theme:'Laboratorium Unsur',
+desc:'Mengenali kategori realitas dan cara memahami benda, sifat, gerak, serta hubungan di alam.',
+body:'Waisesika dikaitkan dengan Rsi Kanada. Ajarannya menguraikan padartha atau kategori realitas, seperti dravya, guna, karma, samanya, visesa, dan samavaya. Tradisi ini juga terkenal dengan pembahasan atomisme.',
+chips:['Kanada','Padartha','Dravya','Guna','Karma','Samavaya'],
+qs:[
+['Tokoh yang dikaitkan dengan Waisesika adalah …',['Kanada','Gautama','Jaimini','Badarayana'],'Kanada'],
+['Dravya berarti …',['Substansi/zat','Sifat','Gerak','Perbandingan'],'Substansi/zat'],
+['Guna dalam Waisesika berarti …',['Kualitas/sifat','Kesimpulan','Ritual','Pembebasan'],'Kualitas/sifat'],
+['Karma dalam kategori Waisesika berarti …',['Gerak/aktivitas','Kitab','Sifat warna','Kesaksian'],'Gerak/aktivitas'],
+['Samavaya menunjuk pada …',['Hubungan inheren/melekat','Meditasi','Api yajna','Panca indera'],'Hubungan inheren/melekat']
+]
+},
+{
+title:'Samkhya',icon:'🌳',theme:'Taman Purusa & Prakrti',
+desc:'Memahami pembedaan Purusa dan Prakrti serta perkembangan unsur-unsur realitas.',
+body:'Samkhya menjelaskan realitas melalui pembedaan Purusa sebagai kesadaran dan Prakrti sebagai prinsip alam/materi. Prakrti berkaitan dengan tiga guna: sattva, rajas, dan tamas. Pembebasan dikaitkan dengan pengetahuan yang membedakan Purusa dan Prakrti.',
+chips:['Purusa','Prakrti','Sattva','Rajas','Tamas','Viveka'],
+qs:[
+['Purusa dalam Samkhya terutama dipahami sebagai …',['Kesadaran','Materi','Gerak','Ritual'],'Kesadaran'],
+['Prakrti adalah …',['Prinsip alam/materi','Kesaksian verbal','Logika','Tokoh'],'Prinsip alam/materi'],
+['Tiga guna terdiri dari …',['Sattva, Rajas, Tamas','Yama, Niyama, Asana','Dravya, Guna, Karma','Atman, Brahman, Jagat'],'Sattva, Rajas, Tamas'],
+['Rajas secara umum berkaitan dengan …',['Aktivitas/gerak','Ketenangan murni','Kegelapan/inersia','Kesadaran murni'],'Aktivitas/gerak'],
+['Pengetahuan yang membedakan Purusa dan Prakrti disebut penting untuk …',['Pembebasan','Menambah harta','Upacara semata','Perdagangan'],'Pembebasan']
+]
+},
+{
+title:'Mimamsa',icon:'🔥',theme:'Api Yajna',
+desc:'Mengeksplorasi dharma, Veda, tindakan ritual, dan kewajiban yang benar.',
+body:'Mimamsa Purva dikaitkan dengan Rsi Jaimini dan menekankan penafsiran Veda serta pelaksanaan dharma. Fokusnya antara lain kewajiban ritual, tindakan yang benar, dan otoritas pengetahuan Veda.',
+chips:['Jaimini','Dharma','Veda','Karma','Yajna','Kewajiban'],
+qs:[
+['Tokoh utama Mimamsa adalah …',['Jaimini','Kanada','Patanjali','Gautama'],'Jaimini'],
+['Fokus utama Mimamsa berkaitan erat dengan …',['Dharma dan tindakan sesuai Veda','Atom','Meditasi delapan tahap','Logika formal'],'Dharma dan tindakan sesuai Veda'],
+['Yajna secara umum merupakan …',['Persembahan/upacara suci','Penarikan kesimpulan','Kualitas benda','Pembedaan Purusa'],'Persembahan/upacara suci'],
+['Dalam konteks Mimamsa, Veda memiliki kedudukan sebagai …',['Sumber otoritatif pengetahuan dharma','Cerita hiburan','Objek dagang','Alat ukur fisika'],'Sumber otoritatif pengetahuan dharma'],
+['Dharma secara sederhana dapat dipahami sebagai …',['Kewajiban/tindakan yang benar','Gerak benda','Sifat warna','Kesadaran murni'],'Kewajiban/tindakan yang benar']
+]
+},
+{
+title:'Yoga',icon:'🧘',theme:'Jalan Kesadaran',
+desc:'Mempelajari pengendalian pikiran dan Astanga Yoga sebagai jalan menuju ketenangan dan samadhi.',
+body:'Yoga Darsana dikaitkan dengan Patanjali. Ajarannya menekankan pengendalian aktivitas pikiran dan jalan praktik Astanga Yoga: yama, niyama, asana, pranayama, pratyahara, dharana, dhyana, dan samadhi.',
+chips:['Patanjali','Yama','Niyama','Asana','Pranayama','Dhyana','Samadhi'],
+qs:[
+['Tokoh yang sangat dikenal dalam Yoga Darsana adalah …',['Patanjali','Jaimini','Kanada','Gautama'],'Patanjali'],
+['Tahap pertama Astanga Yoga adalah …',['Yama','Asana','Dhyana','Samadhi'],'Yama'],
+['Pranayama berkaitan dengan …',['Pengaturan napas/energi napas','Etika sosial','Meditasi mendalam','Pemusatan perhatian'],'Pengaturan napas/energi napas'],
+['Dharana berarti …',['Konsentrasi/pemusatan perhatian','Tidur','Upacara','Persepsi'],'Konsentrasi/pemusatan perhatian'],
+['Samadhi merupakan …',['Keadaan penyerapan/kesadaran meditatif mendalam','Gerak tubuh','Sifat benda','Perbandingan'],'Keadaan penyerapan/kesadaran meditatif mendalam']
+]
+},
+{
+title:'Wedanta',icon:'📜',theme:'Perpustakaan Brahman',
+desc:'Menutup perjalanan dengan pertanyaan tentang Brahman, Atman, realitas, dan moksa.',
+body:'Wedanta berkembang dari pemikiran Upanisad, Bhagavad Gita, dan Brahma Sutra. Pokok bahasannya antara lain Brahman, Atman, jagat, dan moksa. Di dalam tradisi Wedanta berkembang berbagai aliran seperti Advaita, Visistadvaita, dan Dvaita.',
+chips:['Brahman','Atman','Jagat','Moksa','Advaita','Visistadvaita','Dvaita'],
+qs:[
+['Brahman dalam Wedanta menunjuk pada …',['Realitas tertinggi','Gerak tubuh','Sifat benda','Ritual semata'],'Realitas tertinggi'],
+['Atman secara umum berkaitan dengan …',['Diri/inti kesadaran','Atom','Upacara','Inferensi'],'Diri/inti kesadaran'],
+['Moksa berarti …',['Pembebasan','Kegiatan ritual','Kualitas','Persepsi'],'Pembebasan'],
+['Advaita Vedanta secara umum menekankan …',['Non-dualitas','Dualitas mutlak','Atomisme','Logika empat pramana'],'Non-dualitas'],
+['Tiga aliran yang terkenal dalam Wedanta adalah …',['Advaita, Visistadvaita, Dvaita','Nyaya, Yoga, Waisesika','Sattva, Rajas, Tamas','Yama, Niyama, Asana'],'Advaita, Visistadvaita, Dvaita']
+]
+}
+];
+
+let state=JSON.parse(localStorage.getItem('sadDarsanaProgress')||'null')||{completed:[],current:0};
+let chapter=0,qIndex=0,score=0,answered=false;
+
+function save(){localStorage.setItem('sadDarsanaProgress',JSON.stringify(state))}
+function show(id){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+if(id==='map')renderMap()
+}
+function startJourney(){show('map')}
+
+function renderMap(){
+const el=document.getElementById('cards');
+el.innerHTML=chapters.map((c,i)=>{
+const unlocked=i===0||state.completed.includes(i-1);
+const done=state.completed.includes(i);
+return `<article class="card ${unlocked?'':'locked'}" ${unlocked?`onclick="openChapter(${i})"`:''}>
+<span class="num">0${i+1}</span>
+<div class="icon">${c.icon}</div>
+<span class="tag">${c.theme}</span>
+<h2>${c.title}</h2>
+<p>${c.desc}</p>
+${done?'<span class="check">✓ 100/100</span>':unlocked?'<span class="check">Buka →</span>':'<span class="lock">🔒 Terkunci</span>'}
+</article>`
+}).join('')
+}
+
+function openChapter(i){
+chapter=i;
+const c=chapters[i];
+document.getElementById('lessonPanel').innerHTML=`
+<div class="lesson-head">
+<div class="bigicon">${c.icon}</div>
+<div><div class="orn" style="text-align:left;letter-spacing:3px">BAB ${i+1}</div><h1>${c.title}</h1></div>
+</div>
+<h3>${c.theme}</h3>
+<div class="literacy">
+<div class="literacy-label">📖 Literasi Darsana</div>
+<div class="literacy-title">Sekilas tentang ${c.title}</div>
+<p>${c.body}</p>
+<div class="literacy-note">Bacalah dengan santai untuk mengenal latar belakang dan gagasan umum Darsana ini sebelum memulai tantangan.</div>
+</div>
+<div class="actions">
+<button class="btn secondary" onclick="show('map')">Kembali</button>
+<button class="btn" onclick="startQuiz()">Mulai Tantangan →</button>
+</div>`;
+show('lesson')
+}
+
+function startQuiz(){
+qIndex=0;score=0;answered=false;
+const c=chapters[chapter];
+const activeTheme=themes[localStorage.getItem('sadDarsanaTheme')||'ocean']||themes.ocean;
+document.documentElement.style.setProperty('--theme1',activeTheme.accent);
+document.documentElement.style.setProperty('--theme2',activeTheme.gold);
+document.getElementById('sceneSymbol').textContent=c.icon;
+document.getElementById('chapterBadge').textContent=`✦ Bab ${String(chapter+1).padStart(2,'0')} • ${c.theme}`;
+renderQuestion();show('quiz')
+}
+
+function renderQuestion(){
+const q=chapters[chapter].qs[qIndex];
+const shuffled=[...q[1]].sort(()=>Math.random()-.5);
+document.getElementById('qProgress').textContent=`Soal ${qIndex+1} dari 5`;
+document.getElementById('qScore').textContent=`Poin: ${score}/100`;
+document.getElementById('qBar').style.width=(qIndex/5*100)+'%';
+document.getElementById('question').textContent=q[0];
+document.getElementById('feedback').textContent='Pilih satu jawaban yang paling tepat.';
+document.getElementById('nextBtn').style.display='none';
+document.getElementById('options').innerHTML=shuffled.map((x,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${x}</button>`).join('');
+answered=false
+}
+
+function answer(i){
+if(answered)return;
+answered=true;
+const q=chapters[chapter].qs[qIndex],opts=document.querySelectorAll('.option');
+const selected=opts[i].textContent.replace(/^[A-D]\.\s*/,'');
+const correct=q[2];
+const correctIndex=[...opts].findIndex(b=>b.textContent.replace(/^[A-D]\.\s*/,'')===correct);
+opts.forEach((b,n)=>{
+if(n===correctIndex)b.classList.add('correct');
+if(n===i&&n!==correctIndex)b.classList.add('wrong');
+b.disabled=true
+});
+if(selected===correct){
+score+=20;
+document.getElementById('feedback').innerHTML='<span style="color:var(--good)">✓ Benar! +20 poin</span>';
+const burst=document.getElementById('burst');
+burst.classList.remove('show');void burst.offsetWidth;burst.classList.add('show')
+}else{
+document.getElementById('feedback').innerHTML=`<span style="color:var(--bad)">✕ Belum tepat.</span> Jawaban benar: <b>${q[2]}</b>`
+}
+document.getElementById('qScore').textContent=`Poin: ${score}/100`;
+document.getElementById('nextBtn').style.display='inline-block';
+document.getElementById('nextBtn').textContent=qIndex===4?'Lihat Hasil →':'Soal Berikutnya →'
+}
+
+function nextQuestion(){
+if(qIndex<4){qIndex++;renderQuestion()}
+else finishChapter()
+}
+
+function finishChapter(){
+if(score===100){
+if(!state.completed.includes(chapter))state.completed.push(chapter);
+save();
+if(chapter===chapters.length-1){show('closing');return}
+toast('Hebat! 100/100. Bab berikutnya terbuka.');
+show('map')
+}else{
+document.getElementById('lessonPanel').innerHTML=`
+<div class="center">
+<div class="seal">📖</div><div class="orn">HASIL TANTANGAN</div>
+<h1>${chapters[chapter].title}</h1>
+<div class="score">${score}/100</div>
+<p class="small">Bab berikutnya hanya dapat dibuka setelah meraih <b>100/100</b>. Ulangi tantangan dan coba lagi!</p>
+<div class="actions" style="justify-content:center">
+<button class="btn" onclick="startQuiz()">↻ Coba Lagi</button>
+<button class="btn secondary" onclick="show('map')">Peta</button>
+</div>
+</div>`;
+show('lesson')
+}
+}
+
+function resetProgress(){
+if(confirm('Hapus seluruh progres dan mulai dari awal?')){
+state={completed:[],current:0};save();renderMap();toast('Progres telah diulang.')
+}
+}
+function playAgain(){state={completed:[],current:0};save();show('map')}
+function toast(t){
+const x=document.getElementById('toast');
+x.textContent=t;x.classList.add('show');
+setTimeout(()=>x.classList.remove('show'),2200)
+}
+applyTheme(localStorage.getItem('sadDarsanaTheme')||'ocean');
+renderMap();
+</script>
+</body>
+</html>
